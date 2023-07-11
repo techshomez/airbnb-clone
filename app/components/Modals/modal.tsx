@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
 
-interface ModalsProps {
+interface ModalProps {
   isOpen?: boolean;
   onClose: () => void;
   onSubmit: () => void;
@@ -12,22 +12,22 @@ interface ModalsProps {
   body?: React.ReactElement;
   footer?: React.ReactElement;
   actionLabel: string;
-  disabled?: string;
+  disabled?: boolean;
   secondaryAction?: () => void;
-  secondaryLabel?: string;
+  secondaryActionLabel?: string;
 }
 
-const Modal: React.FC<ModalsProps> = ({
+const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
   title,
   body,
-  footer,
   actionLabel,
+  footer,
   disabled,
   secondaryAction,
-  secondaryLabel,
+  secondaryActionLabel,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
   useEffect(() => {
@@ -91,7 +91,19 @@ const Modal: React.FC<ModalsProps> = ({
               {/* Footer */}
               <div className="flex flex-col gap-2 p-5">
                 <div className="flex flex-row items-center gap-4 w-full">
-                  <Button label="My Button" />
+                  {secondaryAction && secondaryActionLabel && (
+                    <Button
+                      outline
+                      disabled={disabled}
+                      label={secondaryActionLabel}
+                      onClick={handleSecondaryAction}
+                    />
+                  )}
+                  <Button
+                    disabled={disabled}
+                    label={actionLabel}
+                    onClick={handleSubmit}
+                  />
                 </div>
               </div>
             </div>
